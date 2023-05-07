@@ -24,16 +24,15 @@ const checkUserId = (request, response, next) => {
 }
 
      const checkMethod = (request, response, next) => {
-      const Method = request.Methods
+      const method = request.method
       const url = request.url
 
-      console.log(Method, url)
+      console.log(`Esse é o methodo: ${method} seguido dessa URL: ${url}`)
        
-
     next()
 };
 
-app.post('/order', checkMethod,(request, response) => {
+app.post('/order', checkMethod,(request, response) => { //mostra a rota criada
     const { order, clientName, price }  = request.body
 
     const user = { id:uuid.v4(), order, clientName, price, Status: "Em preparação"}
@@ -46,13 +45,13 @@ app.post('/order', checkMethod,(request, response) => {
 
 app.get('/order', checkMethod, (request, response) => {
     
-    const { order, clientName, price } = request.body
-  
+  console.log(Orders)
+    
     return response.json(Orders)
   
   })
 
-  app.put('/order/:id', checkUserId, checkMethod, (request, response) => {
+  app.put('/order/:id', checkUserId, checkMethod, (request, response) => { //atualza a rota criada
     const { order, clientName, price  } = request.body
     const index = request.userIndex
     const id = request.userId
@@ -75,16 +74,15 @@ app.delete('/order/:id', checkUserId, checkMethod,(request, response) => {
 })
 
 app.get('/order/:id', checkUserId, checkMethod,(request, response) => {
-    const id = request.userId
-    const user = Orders.findIndex(user => user.id === id)
+    const index = request.userIndex
      
-    return response.json(Orders[user])
+    return response.json(Orders[index])
   
   })
 
   app.patch('/order/:id', checkUserId, checkMethod, (request, response) => {
     
-    const index = request.orderIndex
+    const index = request.userIndex
     const { id } = request.params
     const { order, clientName, price } = request.body
 
@@ -98,9 +96,6 @@ app.get('/order/:id', checkUserId, checkMethod,(request, response) => {
   })
 
 
-
-  
-  
 
 
 app.listen(port, () => {
